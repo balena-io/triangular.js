@@ -1,7 +1,8 @@
 define [
 	"angular"
 	"d3"
-], (angular, d3) ->
+	"lodash"
+], (angular, d3, _) ->
 	angular.module('triangular', [])
 	.factory 'd3ng', ($rootScope) ->
 		return {
