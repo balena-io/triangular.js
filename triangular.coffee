@@ -5,7 +5,7 @@ umd = (root, factory) ->
   else if typeof exports is "object"
     module.exports = factory(require("angular"), require("d3"), require("lodash"))
   else
-    root.Requester = factory(root.$, root._)
+    root.triangularjs = factory(root.angular, root.d3, root._)
 
 #the actual module
 umd(this, (angular, d3, _) ->

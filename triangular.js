@@ -8,7 +8,7 @@
     } else if (typeof exports === "object") {
       return module.exports = factory(require("angular"), require("d3"), require("lodash"));
     } else {
-      return root.Requester = factory(root.$, root._);
+      return root.triangularjs = factory(root.angular, root.d3, root._);
     }
   };
 
