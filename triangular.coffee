@@ -98,3 +98,92 @@ define [
 					else
 						console.warn "not implemented", val
 		}
+
+	.directive 'svgDraggable', ($document) ->
+		(scope, element, attr) ->
+			startX = 0
+			startY = 0
+			x = 0
+			y = 0
+			svgRootX = 0
+			svgRootY = 0
+			node = {}
+
+			element.on 'mousedown', (event) ->
+				# Prevent default dragging of selected content
+				event.preventDefault()
+
+				node = scope.$parent.nodes[scope.$index]
+				svgRootX = node.cx
+				svgRootY = node.cy
+				startX = event.screenX
+				startY = event.screenY
+
+				$document.on('mousemove', mousemove)
+				$document.on('mouseup', mouseup)
+
+			mousemove = (event) ->
+				x = event.screenX - startX
+				y = event.screenY - startY
+				node.cx = x + svgRootX
+				node.cy = y + svgRootY
+				scope.$parent.$parent.$digest()
+
+			mouseup = ->
+				$document.off('mousemove', mousemove)
+				$document.off('mouseup', mouseup)
+
+	.directive 'svgDraggableX', ($document) ->
+		(scope, element, attr) ->
+			startX = 0
+			x = 0
+			y = 0
+			svgRootX = 0
+			node = {}
+	
+			element.on 'mousedown', (event) ->
+				# Prevent default dragging of selected content
+				event.preventDefault()
+	
+				node = scope.$parent.nodes[scope.$index]
+				svgRootX = node.cx
+				startX = event.screenX
+	
+				$document.on('mousemove', mousemove)
+				$document.on('mouseup', mouseup)
+	
+			mousemove = (event) ->
+				x = event.screenX - startX
+				node.cx = x + svgRootX
+				scope.$parent.$parent.$digest()
+	
+			mouseup = ->
+				$document.off('mousemove', mousemove)
+				$document.off('mouseup', mouseup)
+
+	.directive 'svgDraggableY', ($document) ->
+		(scope, element, attr) ->
+			startY = 0
+			y = 0
+			svgRootY = 0
+			node = {}
+	
+			element.on 'mousedown', (event) ->
+				# Prevent default dragging of selected content
+				event.preventDefault()
+	
+				node = scope.$parent.nodes[scope.$index]
+				svgRootY = node.cy
+				startY = event.screenY
+	
+				$document.on('mousemove', mousemove)
+				$document.on('mouseup', mouseup)
+	
+			mousemove = (event) ->
+				y = event.screenY - startY
+				node.cy = y + svgRootY
+				scope.$parent.$parent.$digest()
+
+		mouseup = ->
+			$document.off('mousemove', mousemove)
+			$document.off('mouseup', mouseup)
