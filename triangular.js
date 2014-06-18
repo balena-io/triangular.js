@@ -133,31 +133,23 @@
           });
         }
       };
-    }).directive('svgDraggable', function($document) {
+    }).directive('svgDragX', function($document, $parse) {
       return function(scope, element, attr) {
-        var mousemove, mouseup, node, startX, startY, svgRootX, svgRootY, x, y;
+        var mousemove, mouseup, startX, svgRootX, targetX, x;
         startX = 0;
-        startY = 0;
         x = 0;
-        y = 0;
         svgRootX = 0;
-        svgRootY = 0;
-        node = {};
+        targetX = $parse(attr.svgDragX);
         element.on('mousedown', function(event) {
           event.preventDefault();
-          node = scope.$parent.nodes[scope.$index];
-          svgRootX = node.cx;
-          svgRootY = node.cy;
+          svgRootX = targetX(scope);
           startX = event.screenX;
-          startY = event.screenY;
           $document.on('mousemove', mousemove);
           return $document.on('mouseup', mouseup);
         });
         mousemove = function(event) {
           x = event.screenX - startX;
-          y = event.screenY - startY;
-          node.cx = x + svgRootX;
-          node.cy = y + svgRootY;
+          targetX.assign(scope, x + svgRootX);
           return scope.$parent.$parent.$digest();
         };
         return mouseup = function() {
@@ -165,50 +157,23 @@
           return $document.off('mouseup', mouseup);
         };
       };
-    }).directive('svgDraggableX', function($document) {
+    }).directive('svgDragY', function($document, $parse) {
       return function(scope, element, attr) {
-        var mousemove, mouseup, node, startX, svgRootX, x, y;
-        startX = 0;
-        x = 0;
-        y = 0;
-        svgRootX = 0;
-        node = {};
-        element.on('mousedown', function(event) {
-          event.preventDefault();
-          node = scope.$parent.nodes[scope.$index];
-          svgRootX = node.cx;
-          startX = event.screenX;
-          $document.on('mousemove', mousemove);
-          return $document.on('mouseup', mouseup);
-        });
-        mousemove = function(event) {
-          x = event.screenX - startX;
-          node.cx = x + svgRootX;
-          return scope.$parent.$parent.$digest();
-        };
-        return mouseup = function() {
-          $document.off('mousemove', mousemove);
-          return $document.off('mouseup', mouseup);
-        };
-      };
-    }).directive('svgDraggableY', function($document) {
-      return function(scope, element, attr) {
-        var mousemove, mouseup, node, startY, svgRootY, y;
+        var mousemove, mouseup, startY, svgRootY, targetY, y;
         startY = 0;
         y = 0;
         svgRootY = 0;
-        node = {};
+        targetY = $parse(attr.svgDragY);
         element.on('mousedown', function(event) {
           event.preventDefault();
-          node = scope.$parent.nodes[scope.$index];
-          svgRootY = node.cy;
+          svgRootY = targetY(scope);
           startY = event.screenY;
           $document.on('mousemove', mousemove);
           return $document.on('mouseup', mouseup);
         });
         mousemove = function(event) {
           y = event.screenY - startY;
-          node.cy = y + svgRootY;
+          targetY.assign(scope, y + svgRootY);
           return scope.$parent.$parent.$digest();
         };
         return mouseup = function() {
