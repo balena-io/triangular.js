@@ -190,7 +190,7 @@ umd(this, (angular, d3, _) ->
           node.cy = y + svgRootY
           scope.$parent.$parent.$digest()
 
-      mouseup = ->
-        $document.off('mousemove', mousemove)
-        $document.off('mouseup', mouseup)
+        mouseup = ->
+          $document.off('mousemove', mousemove)
+          $document.off('mouseup', mouseup)
 )

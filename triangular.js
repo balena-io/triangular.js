@@ -192,9 +192,8 @@
         };
       };
     }).directive('svgDraggableY', function($document) {
-      var mouseup;
-      (function(scope, element, attr) {
-        var mousemove, node, startY, svgRootY, y;
+      return function(scope, element, attr) {
+        var mousemove, mouseup, node, startY, svgRootY, y;
         startY = 0;
         y = 0;
         svgRootY = 0;
@@ -207,15 +206,15 @@
           $document.on('mousemove', mousemove);
           return $document.on('mouseup', mouseup);
         });
-        return mousemove = function(event) {
+        mousemove = function(event) {
           y = event.screenY - startY;
           node.cy = y + svgRootY;
           return scope.$parent.$parent.$digest();
         };
-      });
-      return mouseup = function() {
-        $document.off('mousemove', mousemove);
-        return $document.off('mouseup', mouseup);
+        return mouseup = function() {
+          $document.off('mousemove', mousemove);
+          return $document.off('mouseup', mouseup);
+        };
       };
     });
   });
